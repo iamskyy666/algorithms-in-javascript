@@ -642,3 +642,350 @@ Space = **O(n)** (new array)
 
 ---
 
+This is one of those topics where most people memorize a few tricks and move on. That’s a mistake. If we actually understand bitwise operations deeply, they become a **huge advantage in DSA and performance-heavy code**.
+
+Let’s build this properly from the ground up.
+
+---
+
+# 🧠 1. What are Bitwise Operations?
+
+👉 Bitwise operations work on the **binary (bit-level)** representation of numbers.
+
+In JavaScript:
+
+* All numbers are **64-bit floating point (IEEE 754)**
+* BUT bitwise operations convert them into **32-bit signed integers**
+
+So internally:
+
+```js
+5 → 00000000 00000000 00000000 00000101
+```
+
+---
+
+# ⚠️ Important Rule (Most people miss this)
+
+👉 Bitwise ops in JS:
+
+* Convert number → **32-bit signed integer**
+* Perform operation
+* Convert back to JS number
+
+This is why:
+
+```js
+console.log(5.9 | 0); // 5
+```
+
+---
+
+# 🔢 2. Binary Basics (Quick)
+
+| Decimal | Binary |
+| ------- | ------ |
+| 1       | 0001   |
+| 2       | 0010   |
+| 3       | 0011   |
+| 4       | 0100   |
+| 5       | 0101   |
+
+---
+
+# 🔧 3. All Bitwise Operators (Core)
+
+---
+
+## ✅ 1. AND (`&`)
+
+👉 Returns 1 only if BOTH bits are 1
+
+```js
+5 & 3
+```
+
+```txt
+101
+011
+---
+001 → 1
+```
+
+📌 Use cases:
+
+* Check specific bits
+* Remove bits
+* Power of 2 trick
+
+---
+
+## ✅ 2. OR (`|`)
+
+👉 Returns 1 if ANY bit is 1
+
+```js
+5 | 3
+```
+
+```txt
+101
+011
+---
+111 → 7
+```
+
+📌 Use cases:
+
+* Set bits
+* Merge flags
+
+---
+
+## ✅ 3. XOR (`^`)
+
+👉 Returns 1 if bits are DIFFERENT
+
+```js
+5 ^ 3
+```
+
+```txt
+101
+011
+---
+110 → 6
+```
+
+📌 Powerful properties:
+
+```js
+a ^ a = 0
+a ^ 0 = a
+```
+
+📌 Use cases:
+
+* Find unique element in array
+* Swap values (rarely used now)
+
+---
+
+## ✅ 4. NOT (`~`)
+
+👉 Flips all bits
+
+```js
+~5
+```
+
+Internally:
+
+```txt
+00000000 00000000 00000000 00000101  (5)
+11111111 11111111 11111111 11111010  (~5)
+```
+
+Result:
+
+```js
+~5 = -6
+```
+
+👉 Rule:
+
+```js
+~n = -(n + 1)
+```
+
+---
+
+## ✅ 5. Left Shift (`<<`)
+
+👉 Shifts bits left (adds zeros on right)
+
+```js
+5 << 1  // 10
+```
+
+```txt
+101 → 1010
+```
+
+📌 Equivalent:
+
+```js
+n << k = n * (2^k)
+```
+
+---
+
+## ✅ 6. Right Shift (`>>`)
+
+👉 Preserves sign (keeps negative sign)
+
+```js
+5 >> 1 // 2
+```
+
+```txt
+101 → 10
+```
+
+📌 Equivalent:
+
+```js
+n >> k = Math.floor(n / (2^k))
+```
+
+---
+
+## ✅ 7. Unsigned Right Shift (`>>>`)
+
+👉 Fills left with zeros (no sign)
+
+```js
+-5 >>> 1
+```
+
+👉 Converts negative → large positive number
+
+---
+
+# ⚡ 4. Most Important Patterns (DSA Gold)
+
+---
+
+## 🔥 1. Check if number is EVEN
+
+```js
+num & 1 === 0
+```
+
+---
+
+## 🔥 2. Check Power of 2
+
+```js
+num > 0 && (num & (num - 1)) === 0
+```
+
+---
+
+## 🔥 3. Remove lowest set bit
+
+```js
+num & (num - 1)
+```
+
+---
+
+## 🔥 4. Get lowest set bit
+
+```js
+num & -num
+```
+
+---
+
+## 🔥 5. Count set bits (optimized)
+
+```js
+while (n) {
+  n = n & (n - 1);
+  count++;
+}
+```
+
+---
+
+## 🔥 6. Swap without temp (not recommended in real code)
+
+```js
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+```
+
+---
+
+# ⚠️ 5. Negative Numbers (2’s Complement)
+
+JavaScript uses **2’s complement**.
+
+Example:
+
+```js
+-5
+```
+
+Steps:
+
+1. 5 → `00000101`
+2. Flip → `11111010`
+3. Add 1 → `11111011`
+
+---
+
+# ⚠️ 6. Common Pitfalls (You MUST know)
+
+---
+
+## ❌ 1. `NaN` and floats
+
+```js
+5.7 & 1 // treated as 5
+```
+
+👉 Always converted to integer
+
+---
+
+## ❌ 2. Large numbers overflow
+
+Only **32 bits used**
+
+---
+
+## ❌ 3. `~indexOf` trick (old JS hack)
+
+```js
+if (~arr.indexOf(x)) { }
+```
+
+👉 Avoid this in modern code (confusing)
+
+---
+
+# 🚀 7. Real-World Use Cases
+
+* Permissions systems (flags)
+* Compression algorithms
+* Cryptography basics
+* Game engines
+* Competitive programming
+
+---
+
+# 🧠 8. Mental Model (This is what we remember)
+
+* Numbers = bits
+* Operations = patterns on bits
+* Most tricks come from:
+
+  * `n & (n - 1)`
+  * `n & -n`
+  * XOR properties
+
+---
+
+# 📊 Complexity
+
+All bitwise operations:
+
+👉 **Time Complexity: O(1)**
+👉 **Space Complexity: O(1)**
+
+---
+
+
