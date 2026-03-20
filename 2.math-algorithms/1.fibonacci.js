@@ -3,7 +3,7 @@
 // fibonacci(7) = [0,1,1,2,3,5,8]
 
 function fibonacci(num) {
-  if (typeof num == "number" || num !== NaN) {
+  if (typeof num === "number" || num !== NaN) {
     let op = [0, 1];
     for (let i = 2; i < num; i++) {
       op[i] = op[i - 1] + op[i - 2];
